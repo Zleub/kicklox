@@ -2,12 +2,14 @@ version: "3.9"
 services:
   db:
     image: postgres
+    user: 1000:1000
     volumes:
       - ./tmp/db:/var/lib/postgresql/data
     environment:
       POSTGRES_PASSWORD: password
   web:
     build: .
+    user: 1000:1000
     command: bash -c "rm -f tmp/pids/server.pid && bundle exec rails s -p 3000 -b '0.0.0.0'"
     volumes:
       - .:/myapp

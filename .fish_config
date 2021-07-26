@@ -1,0 +1,19 @@
+function read_routes
+    read header
+
+    set prefix (string match -r '\s*Prefix' $header)
+    set length (math (string length $prefix) + 1)
+
+    while read -l line
+        # echo "This is another line: $line"
+        string replace -ar "\s+" " " (string sub -s $length $line)
+    end
+end
+
+function rails
+    if [ $argv[1] = "routes" ]
+        docker exec kicklox_web_1 rails routes | read_routes
+    else
+        docker exec kicklox_web_1 rails $argv
+    end
+end

@@ -3,9 +3,18 @@
 one:
   body: MyText
   public: false
-  sender: 
-
+  author: arnaud
+  recipient: arnaud
+  
 two:
-  body: MyText
+  body: MyText2
   public: false
-  sender: 
+  author: arnaud
+  recipient: arnaud
+
+three:
+  body: "is for user 2"
+  public: false
+  author: arnaud
+  recipient: toto
+

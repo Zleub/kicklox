@@ -17,3 +17,12 @@ services:
       - "3000:3000"
     depends_on:
       - db
+
+  # cron:
+  #   build:
+  #     context: .
+  #     dockerfile: Dockerfile-cron
+  #   volumes:
+  #     - .:/myapp
+  #   depends_on:
+  #     - db

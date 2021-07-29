@@ -10,10 +10,23 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_07_25_142940) do
+ActiveRecord::Schema.define(version: 2021_07_27_094618) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "archived_messages", force: :cascade do |t|
+    t.text "body"
+    t.boolean "public"
+    t.bigint "author_id"
+    t.bigint "recipient_id"
+    t.bigint "parent_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["author_id"], name: "index_archived_messages_on_author_id"
+    t.index ["parent_id"], name: "index_archived_messages_on_parent_id"
+    t.index ["recipient_id"], name: "index_archived_messages_on_recipient_id"
+  end
 
   create_table "messages", force: :cascade do |t|
     t.text "body"
@@ -34,6 +47,9 @@ ActiveRecord::Schema.define(version: 2021_07_25_142940) do
     t.datetime "updated_at", null: false
   end
 
+  add_foreign_key "archived_messages", "archived_messages", column: "parent_id"
+  add_foreign_key "archived_messages", "users", column: "author_id"
+  add_foreign_key "archived_messages", "users", column: "recipient_id"
   add_foreign_key "messages", "messages", column: "parent_id"
   add_foreign_key "messages", "users", column: "author_id"
   add_foreign_key "messages", "users", column: "recipient_id"

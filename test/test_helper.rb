@@ -7,5 +7,6 @@ class ActiveSupport::TestCase
   fixtures :all
 
   self.set_fixture_class author: User
+  self.set_fixture_class recipient: User
   # Add more helper methods to be used by all tests here...
 end

@@ -1,0 +1,2 @@
+class ArchivedMessage < ApplicationRecord
+end

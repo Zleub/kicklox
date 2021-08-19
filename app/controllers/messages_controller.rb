@@ -1,4 +1,7 @@
 class MessagesController < ApplicationController
+  rescue_from ActiveRecord::RecordNotFound, :with => :record_not_found
+  rescue_from ActiveRecord::RecordInvalid, :with => :record_not_found
+
   # get all messages
   def index
     render :json => Message.all
@@ -53,37 +56,46 @@ class MessagesController < ApplicationController
   end
 
   private
-    def message_params
-      params.require(:message).permit(:body, :public, :author, :recipient)
+  def message_params
+    params.require(:message).permit(:body, :public, :author, :recipient)
+  end
+
+  # shortcut for saving a message
+  private
+  def message_save(message)
+    if message.save!
+      render status: :created,
+        json: {
+          status: :created,
+          id: message.id
+        }
+    else
+      render status: :bad_request,
+        json: {
+          status: :bad_request
+        }
     end
+  end
+
+  # function to replace a phone or email in a body message
+  private
+  def replace_phone_and_email(body)
+    if body
+      internationalphoneRegex = /\+\d{2,3}(\s|\.)?\d{1,2}(\s|\.)?\d{2}(\s|\.)?(\s|\.)?\d{2}(\s|\.)?\d{2}(\s|\.)?\d{2}/
+      phoneRegex = /\d{2}(\s|\.)?\d{2}(\s|\.)?\d{2}(\s|\.)?(\s|\.)?\d{2}(\s|\.)?\d{2}/
+      emailRegex = /(\w|\.)*@(\w|\.)*/
+
+      body.gsub(internationalphoneRegex, "confidentiel")
+        .gsub(phoneRegex, "confidentiel")
+        .gsub(emailRegex, "confidentiel")
+    end
+  end
 
   private
-    # shortcut for saving a message
-    def message_save(message)
-      if message.save!
-        render status: :created,
-          json: {
-            status: :created
-          }
-      else
-        render status: :bad_request,
-          json: {
-            status: :bad_request
-          }
-      end
-    end
-
-  private
-    # function to replace a phone or email in a body message
-    def replace_phone_and_email(body)
-      if body
-        internationalphoneRegex = /\+\d{2,3}(\s|\.)?\d{1,2}(\s|\.)?\d{2}(\s|\.)?(\s|\.)?\d{2}(\s|\.)?\d{2}(\s|\.)?\d{2}/
-        phoneRegex = /\d{2}(\s|\.)?\d{2}(\s|\.)?\d{2}(\s|\.)?(\s|\.)?\d{2}(\s|\.)?\d{2}/
-        emailRegex = /(\w|\.)*@(\w|\.)*/
-
-        body.gsub(internationalphoneRegex, "confidentiel")
-          .gsub(phoneRegex, "confidentiel")
-          .gsub(emailRegex, "confidentiel")
-      end
-    end
+  def record_not_found
+    render status: :bad_request, 
+      json: {
+        status: :bad_request
+      }
+  end
 end

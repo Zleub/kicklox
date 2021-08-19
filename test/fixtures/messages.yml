@@ -18,3 +18,10 @@ three:
   author: arnaud
   recipient: toto
 
+four:
+  body: "is for user 1"
+  public: false
+  author: toto
+  recipient: arnaud
+  parent: three
+

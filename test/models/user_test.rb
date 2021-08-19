@@ -1,6 +1,8 @@
 require 'test_helper'
 
 class UserTest < ActiveSupport::TestCase
+  self.use_instantiated_fixtures = true
+  
   test "Should not save a user without a name" do
     user = User.new
     assert_not user.save, "Saved the user without a name"
@@ -13,5 +15,9 @@ class UserTest < ActiveSupport::TestCase
   
   test "Should get a user with name 'Arnaud'" do
     assert_equal User.find_by(name: "Arnaud").name, "Arnaud", "Not found the user 'Arnaud'"
+  end
+
+  test "Should get a user with id" do
+    assert_equal User.find(@arnaud.id).name, "Arnaud", "Not found the user 'Arnaud'"
   end
 end

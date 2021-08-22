@@ -1,13 +1,14 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
+#simple message
 one:
-  body: MyText
+  body: "MyText"
   public: false
   author: arnaud
   recipient: arnaud
   
 two:
-  body: MyText2
+  body: "MyText2"
   public: false
   author: arnaud
   recipient: arnaud
@@ -18,10 +19,31 @@ three:
   author: arnaud
   recipient: toto
 
-four:
-  body: "is for user 1"
+five:
+  body: "test"
+  public: false
+  author: toto
+  recipient: arnaud
+
+#message in a thread
+six:
+  body: "is thread of four"
+  public: false
+  author: toto
+  recipient: arnaud
+  parent: four
+
+seven:
+  body: "is thread of three"
   public: false
   author: toto
   recipient: arnaud
   parent: three
 
+#message with parent and child
+four:
+  body: "is thread of three"
+  public: false
+  author: toto
+  recipient: arnaud
+  parent: three

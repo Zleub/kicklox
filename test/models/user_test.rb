@@ -20,4 +20,10 @@ class UserTest < ActiveSupport::TestCase
   test "Should get a user with id" do
     assert_equal User.find(@arnaud.id).name, "Arnaud", "Not found the user 'Arnaud'"
   end
+
+  test "Should delete a user by id and all its messages" do
+    User.find(@arnaud.id).destroy
+
+    assert_equal Message.count, 1, "Should have deleted all messages except @five"
+  end
 end

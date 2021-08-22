@@ -19,7 +19,7 @@ namespace :messages do
       end
 
       archived.reverse.each do |n| 
-        n.destroy
+        n.delete
       end
 
       puts "#{archived.length} records archived."

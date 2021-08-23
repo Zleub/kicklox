@@ -1,7 +1,8 @@
 Rails.application.routes.draw do
   get '/users/:id/messages', to: 'messages#by_recipient'
-  get '/thread/:id', to: 'threads#show'
-  get '/thread', to: 'threads#index'
+
+  get '/threads/:id', to: 'threads#show'
+  get '/threads', to: 'threads#index'
 
   get '/users/:user_id/thread/:id', to: 'threads#by_recipient'
  

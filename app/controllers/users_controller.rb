@@ -1,4 +1,7 @@
 class UsersController < ApplicationController
+  rescue_from ActiveRecord::RecordNotFound, :with => :record_not_found
+  rescue_from ActiveRecord::RecordInvalid, :with => :record_not_found
+
   # get all users
   def index
     render :json => User.all
@@ -38,18 +41,31 @@ class UsersController < ApplicationController
   end
 
   private
-    def user_save(user)
-      if user.save!
-        render status: :created,
-          json: {
-            status: :created
-          }
-      else
-        render status: :bad_request,
-          json: {
-            status: :bad_request
-          }
-      end
+  def message_params
+    params.require(:user).permit(:name)
+  end
+
+  private
+  def user_save(user)
+    if user.save!
+      render status: :created,
+        json: {
+          status: :created
+        }
+    else
+      render status: :bad_request,
+        json: {
+          status: :bad_request
+        }
     end
+  end
+
+  private
+  def record_not_found
+    render status: :bad_request, 
+      json: {
+        status: :bad_request
+      }
+  end
 
 end

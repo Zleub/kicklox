@@ -11,7 +11,7 @@ two:
   body: "MyText2"
   public: false
   author: arnaud
-  recipient: arnaud
+  recipient: toto
 
 three:
   body: "is for user 2"
@@ -38,6 +38,13 @@ seven:
   public: false
   author: toto
   recipient: arnaud
+  parent: three
+  
+eight:
+  body: "is thread of three"
+  public: false
+  author: arnaud
+  recipient: toto
   parent: three
 
 #message with parent and child

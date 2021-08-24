@@ -88,6 +88,120 @@ class MessagesControllerTest < ActionDispatch::IntegrationTest
     assert_equal my_message.parent, Message.find(messages(:one).id), "Should find the parent message"
   end
   
+  test "Should replace phone number in a message" do
+    post messages_url, params: {
+      body: 'Hello World 0676738628', 
+      public: true, 
+      author: users(:arnaud).id, 
+      recipient: users(:toto).id
+    }
+
+    assert_response :created
+    my_message = Message.find(@response.parsed_body["id"])
+    assert_equal my_message.body, "Hello World confidentiel", "Should find 'confidentiel' instead of phone number"
+    
+    post messages_url, params: {
+      body: 'Hello World 06 76 73 86 28', 
+      public: true, 
+      author: users(:arnaud).id, 
+      recipient: users(:toto).id
+    }
+
+    assert_response :created
+    my_message = Message.find(@response.parsed_body["id"])
+    assert_equal my_message.body, "Hello World confidentiel", "Should find 'confidentiel' instead of phone number"
+    
+    post messages_url, params: {
+      body: 'Hello World 06.76.73.86.28', 
+      public: true, 
+      author: users(:arnaud).id, 
+      recipient: users(:toto).id
+    }
+
+    assert_response :created
+    my_message = Message.find(@response.parsed_body["id"])
+    assert_equal my_message.body, "Hello World confidentiel", "Should find 'confidentiel' instead of phone number"
+    
+    post messages_url, params: {
+      body: 'Hello World +336.76.73.86.28', 
+      public: true, 
+      author: users(:arnaud).id, 
+      recipient: users(:toto).id
+    }
+
+    assert_response :created
+    my_message = Message.find(@response.parsed_body["id"])
+    assert_equal my_message.body, "Hello World confidentiel", "Should find 'confidentiel' instead of phone number"
+    
+    post messages_url, params: {
+      body: 'Hello World +33676738628', 
+      public: true, 
+      author: users(:arnaud).id, 
+      recipient: users(:toto).id
+    }
+
+    assert_response :created
+    my_message = Message.find(@response.parsed_body["id"])
+    assert_equal my_message.body, "Hello World confidentiel", "Should find 'confidentiel' instead of phone number"
+    
+    post messages_url, params: {
+      body: 'Hello World +336 76 73 86 28', 
+      public: true, 
+      author: users(:arnaud).id, 
+      recipient: users(:toto).id
+    }
+
+    assert_response :created
+    my_message = Message.find(@response.parsed_body["id"])
+    assert_equal my_message.body, "Hello World confidentiel", "Should find 'confidentiel' instead of phone number"
+    
+    post messages_url, params: {
+      body: 'Hello World +33 6 76 73 86 28', 
+      public: true, 
+      author: users(:arnaud).id, 
+      recipient: users(:toto).id
+    }
+
+    assert_response :created
+    my_message = Message.find(@response.parsed_body["id"])
+    assert_equal my_message.body, "Hello World confidentiel", "Should find 'confidentiel' instead of phone number"
+  end
+
+  test "Should replace mail in a message" do
+    post messages_url, params: {
+      body: 'Hello World debray.arnaud@gmail.com', 
+      public: true, 
+      author: users(:arnaud).id, 
+      recipient: users(:toto).id
+    }
+
+    assert_response :created
+    my_message = Message.find(@response.parsed_body["id"])
+    assert_equal my_message.body, "Hello World confidentiel", "Should find 'confidentiel' instead of mail"
+    
+    post messages_url, params: {
+      body: 'Hello World debray_arnaud@gmail.com', 
+      public: true, 
+      author: users(:arnaud).id, 
+      recipient: users(:toto).id
+    }
+
+    assert_response :created
+    my_message = Message.find(@response.parsed_body["id"])
+    assert_equal my_message.body, "Hello World confidentiel", "Should find 'confidentiel' instead of mail"
+    
+    post messages_url, params: {
+      body: 'Hello World debrayarnaud@gmail.com', 
+      public: true, 
+      author: users(:arnaud).id, 
+      recipient: users(:toto).id
+    }
+
+    assert_response :created
+    my_message = Message.find(@response.parsed_body["id"])
+    assert_equal my_message.body, "Hello World confidentiel", "Should find 'confidentiel' instead of mail"
+  end
+
   test "Should not update a message" do
     patch message_url(Message.first.id), params: {}
 

@@ -1,24 +1,14 @@
 # README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+A project for taking the hand on Ruby on Rails.
 
-Things you may want to cover:
+To test the project, run:
+`docker-compose up`
 
-* Ruby version
+You can then run 
+- `docker exec kicklox_web_1 rails db:setup` to setup the migration serie
+- `docker exec kicklox_web_1 rails test` to execute the tests serie
+- `docker exec kicklox_web_1 rails messages:prune` to execute the archiving job
 
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+Either of thoses commands can be shorten to `rails ...` if you source the `.fish_config`
+in the root directory with the fish shell, providing a shortcut to `docker exec kicklox_web_1 rails`.
